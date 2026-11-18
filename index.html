@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grão Dourado | Controle de Estoque</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+<div class="brand"><div class="brand-mark" aria-hidden="true">GD</div><div><h2>Grão Dourado</h2><small>Controle de Estoque</small></div></div>
+<nav aria-label="Navegação principal">
+<button class="nav-link active" data-page="dashboard" aria-current="page">Dashboard</button>
+<button class="nav-link" data-page="produtos">Produtos</button>
+<button class="nav-link" data-page="movimentacoes">Movimentações</button>
+<button class="nav-link" data-page="reposicao">Reposição</button>
+<button class="nav-link" data-page="historico">Histórico</button>
+</nav>
+<div class="sidebar-footer">Sistema de Gestão<br><strong>Empório Grão Dourado</strong></div>
+</aside>
+<main class="main-content">
+<header class="topbar"><div><h1 id="page-title">Dashboard</h1><p id="page-description">Visão geral do estoque do empório</p></div><span class="status">Sistema local</span></header>
+<section id="page-dashboard" class="page">
+<div class="welcome"><div><h2>Bem-vindo ao Grão Dourado!</h2><p>Gerencie seus produtos e acompanhe seu estoque.</p></div><div class="welcome-decoration" aria-hidden="true">GD</div></div>
+<div class="stats">
+<div class="stat-card"><span>Total de produtos</span><h2 id="stat-produtos">0</h2><small>Produtos cadastrados</small></div>
+<div class="stat-card"><span>Estoque baixo</span><h2 id="stat-baixo">0</h2><small>Precisam de atenção</small></div>
+<div class="stat-card"><span>Movimentações</span><h2 id="stat-movimentacoes">0</h2><small>Entradas, saídas e ajustes</small></div>
+<div class="stat-card"><span>Reposição pendente</span><h2 id="stat-reposicao">0</h2><small>Produtos para repor</small></div>
+</div>
+<section class="content-card"><div class="section-header"><div><h2>Produtos recentes</h2><p>Confira os produtos cadastrados no sistema.</p></div><button class="primary-button" data-action="novo-produto">+ Novo produto</button></div><div class="table-container"><table><thead><tr><th>Produto</th><th>Categoria</th><th>Quantidade</th><th>Status</th></tr></thead><tbody id="tabela-recentes"></tbody></table></div></section>
+</section>
+<section id="page-produtos" class="page" hidden>
+<section class="content-card"><div class="section-header"><div><h2>Produtos cadastrados</h2><p>Consulte, edite e exclua produtos.</p></div><button class="primary-button" data-action="novo-produto">+ Novo produto</button></div>
+<div class="toolbar"><label for="busca-produtos">Buscar produto</label><input id="busca-produtos" type="search" placeholder="Nome ou categoria"></div>
+<div class="table-container"><table><thead><tr><th>Produto</th><th>Categoria</th><th>Quantidade</th><th>Mínimo</th><th>Preço de compra</th><th>Status</th><th>Ações</th></tr></thead><tbody id="tabela-produtos"></tbody></table></div></section>
+</section>
+<section id="page-movimentacoes" class="page" hidden><section class="content-card"><div class="section-header"><div><h2>Registrar movimentação</h2><p>Entradas, saídas e ajustes manuais de estoque.</p></div></div>
+<form id="form-movimentacao" class="form-grid">
+<div class="field"><label for="mov-produto">Produto</label><select id="mov-produto" required></select></div>
+<div class="field"><label for="mov-tipo">Tipo</label><select id="mov-tipo" required><option value="entrada">Entrada</option><option value="saida">Saída</option><option value="ajuste">Ajuste (definir quantidade final)</option></select></div>
+<div class="field"><label for="mov-quantidade">Quantidade</label><input id="mov-quantidade" type="number" min="0" step="0.01" required></div>
+<div class="field full"><label for="mov-obs">Observação (opcional)</label><input id="mov-obs" maxlength="200" placeholder="Ex.: recebimento de mercadoria"></div>
+<div class="full"><button class="primary-button" type="submit">Registrar movimentação</button></div>
+</form></section></section>
+<section id="page-reposicao" class="page" hidden><section class="content-card"><div class="section-header"><div><h2>Lista de reposição</h2><p>Produtos cuja quantidade está no mínimo ou abaixo dele.</p></div></div>
+<div class="table-container"><table><thead><tr><th>Produto</th><th>Quantidade atual</th><th>Estoque mínimo</th><th>Falta para o mínimo</th><th>Situação</th><th>Ação</th></tr></thead><tbody id="tabela-reposicao"></tbody></table></div></section></section>
+<section id="page-historico" class="page" hidden><section class="content-card"><div class="section-header"><div><h2>Histórico de movimentações</h2><p>Registro de alterações de estoque.</p></div></div><div class="table-container"><table><thead><tr><th>Data</th><th>Produto</th><th>Tipo</th><th>Quantidade</th><th>Observação</th></tr></thead><tbody id="tabela-historico"></tbody></table></div></section></section>
+</main></div>
+<div id="modal-produto" class="modal" hidden><div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-titulo"><div class="modal-header"><h2 id="modal-titulo">Novo produto</h2><button type="button" id="fechar-modal" aria-label="Fechar">×</button></div>
+<form id="form-produto"><input id="produto-id" type="hidden"><label for="nome">Nome do produto</label><input type="text" id="nome" maxlength="120" placeholder="Ex.: Castanha-do-pará" required>
+<label for="categoria">Categoria</label><select id="categoria" required><option value="">Selecione</option><option>Castanhas</option><option>Grãos</option><option>Temperos</option><option>Chás</option><option>Outros</option></select>
+<label for="quantidade">Quantidade atual</label><input type="number" id="quantidade" min="0" step="0.01" required>
+<label for="minimo">Estoque mínimo</label><input type="number" id="minimo" min="0" step="0.01" required>
+<label for="preco">Preço de compra (R$)</label><input type="number" id="preco" min="0" step="0.01" required>
+<button type="submit" class="primary-button">Salvar produto</button></form></div></div>
+<div id="mensagem" class="toast" role="status" aria-live="polite" hidden></div>
+</body></html>
